@@ -1,46 +1,39 @@
-# Getting Started with Create React App
+# Clothing store
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+A small e-commerce front end in React and TypeScript. You can browse products, pick a colour and size, search, fill a cart and click through a checkout. There's no backend, so no orders are really placed.
 
-## Available Scripts
+## What's in it
 
-In the project directory, you can run:
+- **Store page:** products filtered by gender (men, women, unisex), with the choice kept in the URL (`?gender=`) so links and the back button behave.
+- **Product pages:** colour and size selectors, quantity, stock status per variant, and related products.
+- **Search:** a modal with suggestions and recent searches, plus a full results page with filter chips, category and price filters, and sorting.
+- **Cart:** a slide-out cart where you can change quantities or remove items. Adding the same variant twice merges the lines.
+- **Checkout:** contact, delivery, shipping and payment sections with an order summary, ending on a confirmation page. It's all front end; nothing is sent anywhere.
 
-### `npm start`
+## How it's put together
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+Products come from a static file, `public/products.json`. `fetchProducts` loads it and works out stock for each product from its variants, and TanStack Query handles caching (5 minute stale time, 2 retries). Routing lives in one place, `buildRoutes`, which turns the app state into each route's props.
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+Each component has its own folder with its styles and types, and bigger ones split their pieces into `components/`, `utils/` and `hooks/` folders. The search results filtering and sorting are small pure functions in `SearchResults/utils`, which keeps them easy to test.
 
-### `npm test`
+## Running it
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+Needs Node 18 (there's an `.nvmrc`).
 
-### `npm run build`
+```bash
+nvm use
+npm install
+npm start
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+Then open http://localhost:3000. `npm run build` makes a production build.
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## Rough edges
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- The only test is the default Create React App one, which still looks for the "learn react" link, so it fails. Real tests are on my list, starting with the search utils and cart logic.
+- Prices in the cart are stored as line totals rather than unit prices, which makes quantity changes fiddlier than they should be.
+- Create React App is no longer maintained. If I kept going I'd move this to Vite.
 
-### `npm run eject`
+## Stack
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+React 18, TypeScript, React Router 6, TanStack Query 5, CSS Modules, classnames.
