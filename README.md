@@ -1,5 +1,7 @@
 # Clothing store
 
+Live: dynamic-ecomm-app.netlify.app
+
 A small e-commerce front end in React and TypeScript. You can browse products, pick a colour and size, search, fill a cart and click through a checkout. There's no backend, so no orders are really placed.
 
 ## What's in it
